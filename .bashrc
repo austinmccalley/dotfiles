@@ -20,6 +20,8 @@ fi
 #######################################################
 # EXPORTS
 #######################################################
+#GPG Stuff
+export GPG_TTY=$(tty)
 
 # Disable the bell
 if [[ $iatest > 0 ]]; then bind "set bell-style visible"; fi
@@ -49,8 +51,8 @@ if [[ $iatest > 0 ]]; then bind "set completion-ignore-case on"; fi
 if [[ $iatest > 0 ]]; then bind "set show-all-if-ambiguous On"; fi
 
 # Set the default editor
-export EDITOR=nano
-export VISUAL=nano
+export EDITOR=vim
+export VISUAL=vim
 alias pico='edit'
 alias spico='sedit'
 alias nano='edit'
@@ -86,9 +88,6 @@ alias web='cd /var/www/html'
 # mount -o loop /home/NAMEOFISO.iso /home/ISOMOUNTDIR/
 # umount /home/NAMEOFISO.iso
 # (Both commands done as root only.)
-
-# Python 3 alias
-alias python='python3'
 
 #######################################################
 # GENERAL ALIAS'S
@@ -210,6 +209,10 @@ alias logs="sudo find /var/log -type f -exec file {} \; | grep 'text' | cut -d' 
 
 # SHA1
 alias sha1='openssl sha1'
+
+# Git 
+alias gita="git add -A"
+
 
 #######################################################
 # SPECIAL FUNCTIONS
@@ -580,6 +583,11 @@ trim()
 #######################################################
 
 alias cpu="grep 'cpu ' /proc/stat | awk '{usage=(\$2+\$4)*100/(\$2+\$4+\$5)} END {print usage}' | awk '{printf(\"%.1f\n\", \$1)}'"
+
+#alias mem="free -m | awk 'NR==2{printf "%.2f%%", $3*100/$2 }'"
+alias mem="free -m | awk 'NR==2{printf \"%.2f%%\n\", \$3*100/\$2 }'"
+
+
 function __setprompt
 {
 	local LAST_COMMAND=$? # Must come first!
@@ -652,11 +660,14 @@ function __setprompt
 	# CPU
 	PS1+="(\[${MAGENTA}\]CPU $(cpu)%"
 
+	# Memory Usage
+	PS1+="\[${DARKGRAY}\]:\[${MAGENTA}\]RAM $(mem)"
+
 	# Jobs
-	PS1+="\[${DARKGRAY}\]:\[${MAGENTA}\]\j"
+	# PS1+="\[${DARKGRAY}\]:\[${MAGENTA}\]\j"
 
 	# Network Connections (for a server - comment out for non-server)
-	PS1+="\[${DARKGRAY}\]:\[${MAGENTA}\]Net $(awk 'END {print NR}' /proc/net/tcp)"
+	# PS1+="\[${DARKGRAY}\]:\[${MAGENTA}\]NET $(awk 'END {print NR}' /proc/net/tcp)"
 
 	PS1+="\[${DARKGRAY}\])-"
 
@@ -670,13 +681,13 @@ function __setprompt
 	fi
 
 	# Current directory
-	PS1+="\[${DARKGRAY}\]:\[${BROWN}\]\w\[${DARKGRAY}\])-"
+	PS1+="\[${DARKGRAY}\]:\[${BROWN}\]\w\[${DARKGRAY}\])"
 
 	# Total size of files in current directory
-	PS1+="(\[${GREEN}\]$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')\[${DARKGRAY}\]:"
+	#PS1+="(\[${GREEN}\]$(/bin/ls -lah | /bin/grep -m 1 total | /bin/sed 's/total //')\[${DARKGRAY}\]:"
 
 	# Number of files
-	PS1+="\[${GREEN}\]\$(/bin/ls -A -1 | /usr/bin/wc -l)\[${DARKGRAY}\])"
+	#PS1+="\[${GREEN}\]\$(/bin/ls -A -1 | /usr/bin/wc -l)\[${DARKGRAY}\])"
 
 	# Skip to the next line
 	PS1+="\n"
@@ -697,7 +708,3 @@ function __setprompt
 	PS4='\[${DARKGRAY}\]+\[${NOCOLOR}\] '
 }
 PROMPT_COMMAND='__setprompt'
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
