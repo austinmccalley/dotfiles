@@ -26,6 +26,10 @@ export GPG_TTY=$(tty)
 # Disable the bell
 if [[ $iatest > 0 ]]; then bind "set bell-style visible"; fi
 
+# Locale
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
 # Expand the history size
 export HISTFILESIZE=10000
 export HISTSIZE=500
@@ -81,7 +85,7 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 #######################################################
 
 # Alias's for SSH
-# alias SERVERNAME='ssh YOURWEBSITE.com -l USERNAME -p PORTNUMBERHERE'
+alias engr='ssh mccallea@access.engr.oregonstate.edu -i ~/keys/id_ecdsa'
 
 # Alias's to change the directory
 alias web='cd /var/www/html'

@@ -38,6 +38,10 @@ Plugin 'posva/vim-vue'
 
 Plugin 'valloric/youcompleteme'
 
+Plugin '907th/vim-auto-save'
+
+Plugin 'anned20/vimsence'
+
 call vundle#end()
 filetype plugin indent on
 
@@ -60,3 +64,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+let g:auto_save = 1 " Enable auto save
+let g:auto_save_events = ["InsertLeave", "TextChanged"]
+let g:auto_save_write_all_buffers = 1 " write all open buffers as if you would use :wa
