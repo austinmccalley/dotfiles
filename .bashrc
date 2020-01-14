@@ -17,6 +17,15 @@ elif [ -f /etc/bash_completion ]; then
 	. /etc/bash_completion
 fi
 
+
+#Enable powerline daemon
+if [ -f `which powerline-daemon` ]; then
+	  powerline-daemon -q
+	  POWERLINE_BASH_CONTINUATION=1
+	  POWERLINE_BASH_SELECT=1
+	  . /usr/local/lib/python2.7/dist-packages/powerline/bindings/bash/powerline.sh
+fi
+
 #######################################################
 # EXPORTS
 #######################################################
@@ -85,6 +94,7 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 
 # Alias's for SSH
 alias engr='ssh mccallea@access.engr.oregonstate.edu -i ~/keys/id_ecdsa'
+alias randoalgo='ssh -i ~/keys/aws-mccallea.pem ec2-user@ec2-52-91-249-8.compute-1.amazonaws.com'
 
 # Alias's to change the directory
 alias web='cd /var/www/html'
